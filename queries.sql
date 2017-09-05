@@ -6,8 +6,8 @@ CREATE TABLE associated_users (user_id integer, group_id integer,
    PRIMARY KEY (user_id, group_id),
    FOREIGN KEY (user_id)
       REFERENCES users(user_id)
-      ON UPDATE CASCADE ON DELETE RESTRICT,
+      ON UPDATE CASCADE ON DELETE CASCADE,
    FOREIGN KEY (group_id)
       REFERENCES groups(group_id)
-      ON UPDATE CASCADE ON DELETE RESTRICT
+      ON UPDATE CASCADE ON DELETE CASCADE
    );
