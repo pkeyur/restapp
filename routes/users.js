@@ -5,14 +5,16 @@ exports.listUsers = function(req, res) {
         connection.query('SELECT * FROM users', function(err, rows) {
             if (err) {
                 console.log("Error Selecting : %s ", err);
+                return next(err);
+            }else{
+                var resUsr = [];
+                for (var usrIndex in rows) {
+                    var usrObj = rows[usrIndex];
+                    resUsr.push(usrObj);
+                    console.log(usrObj);
+                }
+                res.json(resUsr);
             }
-            var resUsr = [];
-            for (var usrIndex in rows) {
-                var usrObj = rows[usrIndex];
-                resUsr.push(usrObj);
-                console.log(usrObj);
-            }
-            res.json(resUsr);
         });
     });
 };
@@ -25,14 +27,17 @@ exports.getID = function(req, res) {
         connection.query('SELECT * FROM users WHERE user_id=?', [id], function(err, rows) {
             if (err) {
                 console.log("Error Selecting : %s ", err);
+                return next(err);
             }
-            var resUsr = [];
-            for (var usrIndex in rows) {
-                var usrObj = rows[usrIndex];
-                resUsr.push(usrObj);
-                console.log(usrObj);
+            else{
+                var resUsr = [];
+                for (var usrIndex in rows) {
+                    var usrObj = rows[usrIndex];
+                    resUsr.push(usrObj);
+                    console.log(usrObj);
+                }
+                res.json(resUsr);
             }
-            res.json(resUsr);
         });
     });
 };
@@ -49,9 +54,11 @@ exports.createUser = function(req, res) {
         var query = connection.query("INSERT INTO users set ? ", data, function(err, rows) {
             if (err) {
                 console.log("Error inserting : %s ", err);
-                res.sendStatus(400);
+                return next(err);
             }
-            res.redirect('/users');
+            else{
+                res.redirect('/users');
+            }
         });
     });
 };
@@ -64,7 +71,7 @@ exports.deleteUser = function(req, res) {
         connection.query("DELETE FROM users WHERE user_id = ? ", id, function(err, rows) {
             if (err) {
                 console.log("Error deleting : %s ", err);
-                res.sendStatus(400);
+                return next(err);
             } else {
                 console.log('deleting successfully');
                 res.sendStatus(200);
